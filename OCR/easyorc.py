@@ -37,7 +37,7 @@ try:
     llm = ChatOpenAI(
         model="deepseek-chat",
         temperature=0,
-        api_key="sk-3f6988865a5944c2a0df3a91de050e0e",
+        api_key="sk-..................",
         base_url="https://api.deepseek.com/v1"  # Updated URL
     )
 
@@ -60,7 +60,7 @@ except Exception as e:
         llm = ChatOpenAI(
             model="deepseek-chat",
             temperature=0,
-            api_key="sk-3f6988865a5944c2a0df3a91de050e0e",
+            api_key="sk-...........................",
             base_url="https://api.deepseek.ai/v1"  # Alternative URL
         )
         chain = (
