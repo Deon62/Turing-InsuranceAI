@@ -1,0 +1,14 @@
+tensorflow==2.11.0  
+huggingface_hub==0.13.3 
+numpy==1.24.0  
+matplotlib==3.7.1  
+Pillow==9.5.0  
+google-colab==1.0.0  
+easyocr==1.7.0
+langchain==0.2.1
+langchain-openai==0.2.1
+langchain-core==0.2.1
+langchain-community==0.2.1
+langchain-huggingface==0.2.1
+cv2==4.10.0
+

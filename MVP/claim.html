@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File a Claim - AutoClaim Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="assets/logo.jpg" alt="AutoClaim Pro Logo">
+            <span>AutoClaim Pro</span>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="claim.html" class="active">File Claim</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <main class="claim-container">
+        <h1>File Your Claim</h1>
+        <div class="progress-bar">
+            <div class="progress-step active" data-step="1">
+                <i class="fas fa-camera"></i>
+                <span>Damage Photos</span>
+            </div>
+            <div class="progress-step" data-step="2">
+                <i class="fas fa-id-card"></i>
+                <span>Documents</span>
+            </div>
+            <div class="progress-step" data-step="3">
+                <i class="fas fa-file-alt"></i>
+                <span>Claim Details</span>
+            </div>
+        </div>
+
+        <form id="claimForm" class="claim-form">
+            <!-- Step 1: Damage Photos -->
+            <div class="form-step active" data-step="1">
+                <h2>Upload Damage Photos</h2>
+                <div class="upload-section">
+                    <div class="upload-box" id="damageUploadBox">
+                        <i class="fas fa-car"></i>
+                        <p>Drag & drop photos here or click to browse</p>
+                        <input type="file" id="damagePhotos" accept="image/*" multiple style="display: none;">
+                        <button type="button" class="upload-btn" onclick="document.getElementById('damagePhotos').click()">Choose Files</button>
+                        <div class="upload-progress" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress"></div>
+                            </div>
+                            <span class="progress-text">0%</span>
+                        </div>
+                    </div>
+                    <div id="damagePreview" class="preview-grid"></div>
+                </div>
+                <div class="damage-assessment">
+                    <h3>AI Damage Assessment</h3>
+                    <div id="damageResult" class="assessment-result">
+                        <p>Upload photos to get instant damage assessment</p>
+                    </div>
+                    <div id="damageDetails" class="damage-details" style="display: none;">
+                        <div class="damage-summary">
+                            <div class="damage-type">
+                                <i class="fas fa-car-crash"></i>
+                                <span id="damageType">-</span>
+                            </div>
+                            <div class="damage-confidence">
+                                <div class="confidence-bar">
+                                    <div class="confidence-fill" id="confidenceFill"></div>
+                                </div>
+                                <span id="confidenceText">0%</span>
+                            </div>
+                        </div>
+                        <div class="damage-breakdown">
+                            <h4>Damage Analysis</h4>
+                            <div id="damageBreakdown" class="breakdown-list"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Documents -->
+            <div class="form-step" data-step="2">
+                <h2>Required Documents</h2>
+                <div class="documents-grid">
+                    <div class="document-upload">
+                        <h3>Driver's License</h3>
+                        <div class="upload-box" id="licenseUpload">
+                            <h4>Driver's License</h4>
+                            <div class="upload-area" id="licenseUploadArea">
+                                <i class="fas fa-id-card"></i>
+                                <p>Drag & drop your driver's license here</p>
+                                <p>or</p>
+                                <input type="file" id="licenseInput" accept="image/*" class="file-input">
+                                <button class="browse-btn" onclick="document.getElementById('licenseInput').click()">Browse Files</button>
+                            </div>
+                            <div class="preview-container" id="licensePreview"></div>
+                            <div class="ocr-results" id="licenseOcrResults"></div>
+                        </div>
+                    </div>
+                    <div class="document-upload">
+                        <h3>Police Report (if applicable)</h3>
+                        <div class="upload-box" id="policeReportUpload">
+                            <h4>Police Report</h4>
+                            <div class="upload-area" id="policeUploadArea">
+                                <i class="fas fa-file-alt"></i>
+                                <p>Drag & drop your police report here</p>
+                                <p>or</p>
+                                <input type="file" id="policeInput" accept="image/*,.pdf" class="file-input">
+                                <button class="browse-btn" onclick="document.getElementById('policeInput').click()">Browse Files</button>
+                            </div>
+                            <div class="preview-container" id="policePreview"></div>
+                            <div class="ocr-results" id="policeOcrResults"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Claim Details -->
+            <div class="form-step" data-step="3">
+                <h2>Claim Information</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="vehicleReg">Vehicle Registration</label>
+                        <input type="text" id="vehicleReg" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="incidentDate">Incident Date</label>
+                        <input type="date" id="incidentDate" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="incidentDescription">Incident Description</label>
+                        <textarea id="incidentDescription" rows="4" required></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-navigation">
+                <button type="button" class="prev-btn" disabled>Previous</button>
+                <button type="button" class="next-btn">Next</button>
+                <button type="submit" class="submit-btn" style="display: none;">Submit Claim</button>
+            </div>
+        </form>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: support@autoclaimpro.com</p>
+                <p>Phone: 0702248984</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="claim.html">File Claim</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 AutoClaim Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Form navigation
+        const form = document.getElementById('claimForm');
+        const steps = document.querySelectorAll('.form-step');
+        const progressSteps = document.querySelectorAll('.progress-step');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        const submitBtn = document.querySelector('.submit-btn');
+        let currentStep = 1;
+
+        function updateForm() {
+            steps.forEach(step => {
+                step.classList.remove('active');
+                if (step.dataset.step == currentStep) {
+                    step.classList.add('active');
+                }
+            });
+
+            progressSteps.forEach(step => {
+                step.classList.remove('active');
+                if (step.dataset.step <= currentStep) {
+                    step.classList.add('active');
+                }
+            });
+
+            prevBtn.disabled = currentStep === 1;
+            nextBtn.style.display = currentStep === steps.length ? 'none' : 'block';
+            submitBtn.style.display = currentStep === steps.length ? 'block' : 'none';
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentStep < steps.length) {
+                currentStep++;
+                updateForm();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateForm();
+            }
+        });
+
+        // Drag and drop functionality
+        function setupDragAndDrop(uploadBox, inputElement) {
+            uploadBox.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadBox.classList.add('drag-over');
+            });
+
+            uploadBox.addEventListener('dragleave', () => {
+                uploadBox.classList.remove('drag-over');
+            });
+
+            uploadBox.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadBox.classList.remove('drag-over');
+                inputElement.files = e.dataTransfer.files;
+                handleFileSelect({ target: inputElement }, inputElement.id + 'Preview');
+            });
+
+            uploadBox.addEventListener('click', () => {
+                inputElement.click();
+            });
+        }
+
+        // File upload previews with progress simulation
+        function handleFileSelect(event, previewId) {
+            const files = event.target.files;
+            const preview = document.getElementById(previewId);
+            const uploadBox = event.target.closest('.upload-box');
+            const progressBar = uploadBox.querySelector('.upload-progress');
+            
+            preview.innerHTML = '';
+
+            for (const file of files) {
+                const reader = new FileReader();
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                
+                // Show progress bar
+                progressBar.style.display = 'flex';
+                const progress = progressBar.querySelector('.progress');
+                const progressText = progressBar.querySelector('.progress-text');
+                
+                if (file.type.startsWith('image/')) {
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        previewItem.appendChild(img);
+                        addPreviewControls(previewItem, preview, progressBar);
+                        
+                        // If this is a damage photo, analyze it
+                        if (previewId === 'damagePreview') {
+                            analyzeDamage(file);
+                        }
+                    }
+                    reader.readAsDataURL(file);
+                } else if (file.type === 'application/pdf') {
+                    previewItem.innerHTML = `
+                        <div class="pdf-preview">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>${file.name}</span>
+                        </div>
+                    `;
+                    addPreviewControls(previewItem, preview, progressBar);
+                }
+                
+                preview.appendChild(previewItem);
+                
+                // Simulate upload progress
+                simulateUploadProgress(progressBar);
+            }
+        }
+
+        function addPreviewControls(previewItem, preview, progressBar) {
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-btn';
+            removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+            removeBtn.onclick = () => {
+                previewItem.remove();
+                if (preview.children.length === 0) {
+                    progressBar.style.display = 'none';
+                }
+            };
+            previewItem.appendChild(removeBtn);
+        }
+
+        function simulateUploadProgress(progressBar) {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                progressBar.querySelector('.progress').style.width = `${progress}%`;
+                progressBar.querySelector('.progress-text').textContent = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        progressBar.style.display = 'none';
+                    }, 500);
+                }
+            }, 100);
+        }
+
+        async function analyzeDamage(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const response = await fetch('/api/analyze-damage', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Analysis failed');
+                }
+
+                const result = await response.json();
+                displayDamageResults(result);
+            } catch (error) {
+                console.error('Error analyzing damage:', error);
+                document.getElementById('damageResult').innerHTML = `
+                    <p class="error">Error analyzing damage. Please try again.</p>
+                `;
+            }
+        }
+
+        function displayDamageResults(result) {
+            const damageResult = document.getElementById('damageResult');
+            const damageDetails = document.getElementById('damageDetails');
+            const damageType = document.getElementById('damageType');
+            const confidenceFill = document.getElementById('confidenceFill');
+            const confidenceText = document.getElementById('confidenceText');
+            const damageBreakdown = document.getElementById('damageBreakdown');
+
+            // Update main result
+            damageResult.innerHTML = `
+                <p>Analysis complete! Click to view details.</p>
+            `;
+            damageResult.style.cursor = 'pointer';
+            damageResult.onclick = () => {
+                damageDetails.style.display = damageDetails.style.display === 'none' ? 'block' : 'none';
+            };
+
+            // Update damage type and confidence
+            damageType.textContent = formatDamageType(result.prediction);
+            const confidence = Math.round(result.confidence * 100);
+            confidenceFill.style.width = `${confidence}%`;
+            confidenceText.textContent = `${confidence}%`;
+
+            // Update breakdown
+            damageBreakdown.innerHTML = '';
+            Object.entries(result.all_probabilities)
+                .sort(([,a], [,b]) => b - a)
+                .forEach(([type, prob]) => {
+                    const probPercent = Math.round(prob * 100);
+                    damageBreakdown.innerHTML += `
+                        <div class="breakdown-item">
+                            <span class="damage-label">${formatDamageType(type)}</span>
+                            <div class="probability-bar">
+                                <div class="probability-fill" style="width: ${probPercent}%"></div>
+                            </div>
+                            <span class="probability-text">${probPercent}%</span>
+                        </div>
+                    `;
+                });
+
+            damageDetails.style.display = 'block';
+        }
+
+        function formatDamageType(type) {
+            return type.split('_')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        // Setup drag and drop for all upload boxes
+        setupDragAndDrop(document.getElementById('damageUploadBox'), document.getElementById('damagePhotos'));
+        setupDragAndDrop(document.getElementById('policeReportUpload'), document.getElementById('policeInput'));
+
+        // File input change handlers
+        document.getElementById('damagePhotos').addEventListener('change', (e) => handleFileSelect(e, 'damagePreview'));
+        document.getElementById('policeInput').addEventListener('change', (e) => handleFileSelect(e, 'policePreview'));
+
+        // Form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Here you would typically send the form data to your backend
+            alert('Claim submitted successfully! We will contact you shortly.');
+        });
+
+        async function analyzeOCR(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const response = await fetch('/api/analyze-ocr', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('OCR analysis failed');
+                }
+
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('Error analyzing OCR:', error);
+                throw error;
+            }
+        }
+
+        function displayOCRResults(results, containerId) {
+            const container = document.getElementById(containerId);
+            if (!results.success) {
+                container.innerHTML = `
+                    <div class="error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Error analyzing document: ${results.error}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="ocr-content">';
+            html += '<h5>Extracted Information:</h5>';
+            
+            // Group text by confidence level
+            const highConfidence = results.data.filter(item => item.confidence > 0.8);
+            const mediumConfidence = results.data.filter(item => item.confidence > 0.5 && item.confidence <= 0.8);
+            const lowConfidence = results.data.filter(item => item.confidence <= 0.5);
+
+            if (highConfidence.length > 0) {
+                html += '<div class="confidence-group high">';
+                html += '<h6>High Confidence Text:</h6>';
+                html += '<ul>';
+                highConfidence.forEach(item => {
+                    html += `<li>${item.text}</li>`;
+                });
+                html += '</ul></div>';
+            }
+
+            if (mediumConfidence.length > 0) {
+                html += '<div class="confidence-group medium">';
+                html += '<h6>Medium Confidence Text:</h6>';
+                html += '<ul>';
+                mediumConfidence.forEach(item => {
+                    html += `<li>${item.text}</li>`;
+                });
+                html += '</ul></div>';
+            }
+
+            if (lowConfidence.length > 0) {
+                html += '<div class="confidence-group low">';
+                html += '<h6>Low Confidence Text:</h6>';
+                html += '<ul>';
+                lowConfidence.forEach(item => {
+                    html += `<li>${item.text}</li>`;
+                });
+                html += '</ul></div>';
+            }
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // File input handlers
+        document.getElementById('licenseInput').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                await processDocumentUpload(file, 'license');
+            }
+        });
+
+        document.getElementById('policeInput').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                await processDocumentUpload(file, 'police');
+            }
+        });
+
+        // Function to process document upload
+        async function processDocumentUpload(file, type) {
+            const previewContainer = document.getElementById(`${type}Preview`);
+            const ocrResultsContainer = document.getElementById(`${type}OcrResults`);
+            
+            // Show loading state
+            previewContainer.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Processing...</p>
+                </div>
+            `;
+            
+            try {
+                // Create preview first
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.createElement('div');
+                    preview.className = 'preview';
+                    
+                    if (file.type.startsWith('image/')) {
+                        preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+                    } else {
+                        preview.innerHTML = `
+                            <div class="file-preview">
+                                <i class="fas fa-file-alt"></i>
+                                <p>${file.name}</p>
+                            </div>
+                        `;
+                    }
+                    
+                    previewContainer.innerHTML = '';
+                    previewContainer.appendChild(preview);
+                };
+                reader.readAsDataURL(file);
+
+                // Perform OCR for image files
+                if (file.type.startsWith('image/')) {
+                    const formData = new FormData();
+                    formData.append('image', file);
+
+                    const response = await fetch('/api/analyze-ocr', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('OCR analysis failed');
+                    }
+
+                    const result = await response.json();
+                    displayOCRResults(result, `${type}OcrResults`);
+                } else {
+                    ocrResultsContainer.innerHTML = `
+                        <div class="info-message">
+                            <i class="fas fa-info-circle"></i>
+                            <p>OCR analysis is only available for image files.</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error processing file:', error);
+                previewContainer.innerHTML = `
+                    <div class="error">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p>Error processing file: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Update drag and drop functionality
+        function setupDragAndDrop() {
+            const licenseArea = document.getElementById('licenseUploadArea');
+            const policeArea = document.getElementById('policeUploadArea');
+            
+            [licenseArea, policeArea].forEach(area => {
+                area.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    area.classList.add('drag-over');
+                });
+
+                area.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    area.classList.remove('drag-over');
+                });
+
+                area.addEventListener('drop', async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    area.classList.remove('drag-over');
+                    
+                    const file = e.dataTransfer.files[0];
+                    if (file) {
+                        const type = area.id === 'licenseUploadArea' ? 'license' : 'police';
+                        await processDocumentUpload(file, type);
+                    }
+                });
+            });
+        }
+
+        // Initialize drag and drop
+        document.addEventListener('DOMContentLoaded', function() {
+            setupDragAndDrop();
+        });
+    </script>
+
+    <style>
+        .ocr-results {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .ocr-content {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .confidence-group {
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .confidence-group.high {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+        }
+
+        .confidence-group.medium {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .confidence-group.low {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+
+        .confidence-group h6 {
+            margin: 0 0 0.5rem 0;
+            color: #333;
+            font-size: 0.85rem;
+        }
+
+        .confidence-group ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .confidence-group li {
+            margin-bottom: 0.25rem;
+            font-size: 0.8rem;
+        }
+
+        .upload-area {
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area.drag-over {
+            border-color: #007bff;
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+
+        .upload-area i {
+            font-size: 2rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            margin: 0.5rem 0;
+            color: #666;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .browse-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .browse-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            color: #dc3545;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .error i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .file-preview i {
+            font-size: 2rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .file-preview p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .info-message {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: #e3f2fd;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+
+        .info-message i {
+            color: #1976d2;
+            margin-right: 0.5rem;
+        }
+
+        .info-message p {
+            margin: 0;
+            color: #1976d2;
+            font-size: 0.9rem;
+        }
+    </style>
+</body>
+</html> 
