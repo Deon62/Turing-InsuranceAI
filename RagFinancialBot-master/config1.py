@@ -1,3 +1,3 @@
-DEEP_SEEK_API = "sk-3f6988865a5944c2a0df3a91de050e0e"
-GEMINI_API_KEY ="AIzaSyDnUgPS6tKa_5sFTEAGlV03JIn6IYUnX8E"
-ELEVEN_LABS_KEY = "sk_21e962036c0e60f743f96a2563a5bfcedb51b350da0dc1f8"
+DEEP_SEEK_API = "sk-.............................."
+GEMINI_API_KEY ="AI................................."
+ELEVEN_LABS_KEY = "sk_21e......................."
